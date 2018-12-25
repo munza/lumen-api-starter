@@ -23,7 +23,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->configure('app');
+$app->configure('app');
 // $app->configure('auth');
 // $app->configure('broadcasting');
 // $app->configure('cache');

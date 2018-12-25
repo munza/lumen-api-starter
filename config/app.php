@@ -15,6 +15,8 @@ return [
 
     'name' => env('APP_NAME', 'Lumen'),
 
+    'version' => env('APP_VERSION', 'unknown'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Environment

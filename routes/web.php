@@ -12,5 +12,13 @@
 */
 
 $router->get('/', function () use ($router) {
-    return $router->app->version();
+    return response()->json([
+        'name' => config('app.name'),
+        'version' => config('app.version'),
+        'framework' => $router->app->version(),
+        'environment' => config('app.env'),
+        'debug_mode' => config('app.debug'),
+        'timestamp' => \Carbon\Carbon::now()->toDateTimeString(),
+        'timezone' => config('app.timezone'),
+    ], 200);
 });
