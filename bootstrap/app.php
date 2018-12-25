@@ -23,8 +23,18 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
-// $app->withFacades();
+// $app->configure('app');
+// $app->configure('auth');
+// $app->configure('broadcasting');
+// $app->configure('cache');
+// $app->configure('database');
+// $app->configure('filesystems');
+// $app->configure('logging');
+// $app->configure('queue');
+// $app->configure('services');
+// $app->configure('view');
 
+// $app->withFacades();
 // $app->withEloquent();
 
 /*
