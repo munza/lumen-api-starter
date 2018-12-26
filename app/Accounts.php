@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\UserCreated;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
@@ -58,6 +59,8 @@ class Accounts
         }
 
         $user->save();
+
+        event(new UserCreated($user));
 
         return fractal($user, new UserTransformer())->toArray();
     }
