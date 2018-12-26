@@ -13,19 +13,19 @@
 
 $router->get('/', function () use ($router) {
     return response()->json([
-        'name'        => config('app.name'),
-        'version'     => config('app.version'),
-        'framework'   => $router->app->version(),
+        'name' => config('app.name'),
+        'version' => config('app.version'),
+        'framework' => $router->app->version(),
         'environment' => config('app.env'),
-        'debug_mode'  => config('app.debug'),
-        'timestamp'   => \Carbon\Carbon::now()->toDateTimeString(),
-        'timezone'    => config('app.timezone'),
+        'debug_mode' => config('app.debug'),
+        'timestamp' => \Carbon\Carbon::now()->toDateTimeString(),
+        'timezone' => config('app.timezone'),
     ], 200);
 });
 
 $router->get('/users', 'UserController@index');
 $router->post('/users', 'UserController@store');
-$router->get('/users/{id}', 'UserController@show');
-$router->put('/users/{id}', 'UserController@update');
-$router->patch('/users/{id}', 'UserController@update');
-$router->delete('/users/{id}', 'UserController@destroy');
+$router->get('/users/{id:[0-9]+}', 'UserController@show');
+$router->put('/users/{id:[0-9]+}', 'UserController@update');
+$router->patch('/users/{id:[0-9]+}', 'UserController@update');
+$router->delete('/users/{id:[0-9]+}', 'UserController@destroy');

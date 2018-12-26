@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
+use App\Accounts;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -10,85 +11,81 @@ use Illuminate\Http\Response;
 class UserController extends Controller
 {
     /**
+     * Controller constructor.
+     *
+     * @param  \App\Accounts  $accounts
+     */
+    public function __construct(Accounts $accounts)
+    {
+        $this->accounts = $accounts;
+    }
+
+    /**
      * Get all the users.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return response()->json([
-            'data' => User::all()->toArray(),
-        ], Response::HTTP_OK);
+        $users = $this->accounts->getUsersWithPagination($request);
+
+        return response()->json($users, Response::HTTP_OK);
     }
 
     /**
      * Store a user.
      *
      * @param  \Illuminate\Http\Request  $request
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request): JsonResponse
     {
-        $validated = $this->validate($request, [
-            'email'    => 'required|unique:users',
-            'name'     => 'required|min:4',
-            'password' => 'required|min:6',
-        ]);
+        $user = $this->accounts->storeUser($request->all());
 
-        return response()->json([
-            'data' => User::create($validated),
-        ], Response::HTTP_CREATED);
+        return response()->json($user, Response::HTTP_CREATED);
     }
 
     /**
      * Get a user.
      *
-     * @param  mixed  $id
+     * @param  int  $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function show(string $id): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $user = User::findOrFail($id);
+        $user = $this->accounts->getUserById($id);
 
-        return response()->json($user);
+        return response()->json($user, Response::HTTP_OK);
     }
 
     /**
      * Update a user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $id
+     * @param  int  $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, int $id): JsonResponse
     {
-        $user = User::findOrFail($id);
+        $user = $this->accounts->updateUserById($id, $request->all());
 
-        $validated = $this->validate($request, [
-            'email'    => 'required|unique:users,email,' . $id,
-            'name'     => 'required|min:4',
-            'password' => 'sometimes|min:6',
-        ]);
-
-        $user->fill($validated);
-        $user->save();
-
-        return response()->json([
-            'data' => $user->toArray(),
-        ], Response::HTTP_ACCEPTED);
+        return response()->json($user, Response::HTTP_OK);
     }
 
     /**
      * Delete a user.
      *
-     * @param  mixed  $id
+     * @param  int  $id
+     *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $user = User::findOrFail($id);
-
-        $user->delete();
+        $this->accounts->deleteUserById($id);
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }

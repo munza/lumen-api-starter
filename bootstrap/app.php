@@ -92,6 +92,7 @@ $app->singleton(
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(\Spatie\Fractal\FractalServiceProvider::class);
+$app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
 
 if ($app->environment() == 'local') {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);

@@ -1,7 +1,8 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
+use App\Traits\QueryFilterable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -10,7 +11,7 @@ use Laravel\Lumen\Auth\Authorizable;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable;
+    use Authenticatable, Authorizable, QueryFilterable;
 
     /**
      * The attributes that are mass assignable.
@@ -28,6 +29,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $hidden = [
         'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $visible = [
+        'id', 'name', 'email',
+    ];
+
+    /**
+     * The fields that should be filterable by query.
+     *
+     * @var array
+     */
+    protected $filterable = [
+        'name', 'email',
     ];
 
     /**
