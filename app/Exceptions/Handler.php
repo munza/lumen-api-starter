@@ -63,12 +63,18 @@ class Handler extends ExceptionHandler
                     $response['message'] = Response::$statusTexts[Response::HTTP_NOT_FOUND];
                     $response['status']  = Response::HTTP_NOT_FOUND;
                     break;
+
+                case $exception instanceof ValidationException:
+                    $response['message'] = Response::$statusTexts[Response::HTTP_UNPROCESSABLE_ENTITY];
+                    $response['status']  = Response::HTTP_UNPROCESSABLE_ENTITY;
+                    $response['details'] = $exception->errors();
+                    break;
             }
 
             if ($this->isDebugMode()) {
                 $response['debug'] = [
                     'exception' => get_class($exception),
-                    'trace'     => $exception->getTrace(),
+                    'trace'     => preg_split("/\n/", $exception->getTraceAsString()),
                 ];
             }
 
