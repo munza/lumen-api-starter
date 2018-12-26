@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use App\Traits\ExceptionRenderable;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Handler extends ExceptionHandler
 {
+    use ExceptionRenderable;
+
     /**
      * A list of the exception types that should not be reported.
      *
@@ -47,61 +50,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception): Response
     {
-        if ($this->isJsonRequest($request)) {
-            $response = [
-                'message' => (string) $exception->getMessage(),
-                'status'  => Response::HTTP_INTERNAL_SERVER_ERROR,
-            ];
-
-            switch (true) {
-                case $exception instanceof HttpException:
-                    $response['message'] = Response::$statusTexts[$exception->getStatusCode()];
-                    $response['status']  = $exception->getStatusCode();
-                    break;
-
-                case $exception instanceof ModelNotFoundException:
-                    $response['message'] = Response::$statusTexts[Response::HTTP_NOT_FOUND];
-                    $response['status']  = Response::HTTP_NOT_FOUND;
-                    break;
-
-                case $exception instanceof ValidationException:
-                    $response['message'] = Response::$statusTexts[Response::HTTP_UNPROCESSABLE_ENTITY];
-                    $response['status']  = Response::HTTP_UNPROCESSABLE_ENTITY;
-                    $response['details'] = $exception->errors();
-                    break;
-            }
-
-            if ($this->isDebugMode()) {
-                $response['debug'] = [
-                    'exception' => get_class($exception),
-                    'trace'     => preg_split("/\n/", $exception->getTraceAsString()),
-                ];
-            }
-
-            return response()->json(['error' => $response], $response['status']);
+        if ($this->isJsonRenderable($request, $exception)) {
+            return $this->renderJsonException($exception);
         }
 
         return parent::render($request, $exception);
-    }
-
-    /**
-     * Determine if the request is a JSON request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return bool
-     */
-    private function isJsonRequest(Request $request): bool
-    {
-        return true;
-    }
-
-    /**
-     * Determine if the debug mode is enabled.
-     *
-     * @return bool
-     */
-    private function isDebugMode(): bool
-    {
-        return (bool) env('APP_DEBUG');
     }
 }
