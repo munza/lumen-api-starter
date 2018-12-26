@@ -53,11 +53,9 @@ class Accounts
     {
         $user = new User($attrs);
 
-        app('validator')->validate($attrs, [
-            'email' => 'required|unique:users',
-            'name' => 'required|min:4',
-            'password' => 'required|min:6',
-        ]);
+        if (!$user->isValid()) {
+            throw new ValidationException($user->validator());
+        }
 
         $user->save();
 
@@ -78,14 +76,12 @@ class Accounts
     public function updateUserById(int $id, array $attrs): array
     {
         $user = User::findOrFail($id);
-
-        app('validator')->validate($attrs, [
-            'email' => 'required|unique:users,email,' . $id,
-            'name' => 'required|min:4',
-            'password' => 'sometimes|min:6',
-        ]);
-
         $user->fill($attrs);
+
+        if (!$user->isValid()) {
+            throw new ValidationException($user->validator());
+        }
+
         $user->save();
 
         return fractal($user, new UserTransformer())->toArray();

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\AttributeHashable;
+use App\Traits\ModelValidable;
 use App\Traits\QueryFilterable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
@@ -11,7 +13,7 @@ use Laravel\Lumen\Auth\Authorizable;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract
 {
-    use Authenticatable, Authorizable, QueryFilterable;
+    use Authenticatable, Authorizable, QueryFilterable, ModelValidable, AttributeHashable;
 
     /**
      * The attributes that are mass assignable.
@@ -50,15 +52,33 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     ];
 
     /**
-     * Hash the password attribute.
+     * Hash the attributes before saving.
      *
-     * @param  string  $value
-     * @return void
+     * @var array
      */
-    public function setPasswordAttribute(string $value = null): void
+    protected $hashable = [
+        'password',
+    ];
+
+    /**
+     * Validation rules for the model.
+     *
+     * @return array
+     */
+    public function rules(): array
     {
-        if (!empty($value)) {
-            $this->attributes['password'] = app('hash')->make($value);
-        }
+        return [
+            'CREATE' => [
+                'name' => 'required',
+                'email' => 'required|unique:users,email',
+                'password' => 'required|min:6',
+            ],
+
+            'UPDATE' => [
+                'name' => 'required',
+                'email' => 'required|unique:users,email,' . $this->id,
+                'password' => 'sometimes|min:6',
+            ],
+        ];
     }
 }
