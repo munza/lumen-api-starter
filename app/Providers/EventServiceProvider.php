@@ -15,5 +15,9 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\UserCreated::class => [
             \App\Listeners\SendWelcomeEmail::class,
         ],
+
+        \App\Events\UserUpdated::class => [
+            \App\Listeners\SendPasswordChangeNotification::class,
+        ],
     ];
 }

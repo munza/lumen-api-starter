@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Events\UserCreated;
+use App\Events\UserUpdated;
 use App\Models\User;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
@@ -80,12 +81,15 @@ class Accounts
     {
         $user = User::findOrFail($id);
         $user->fill($attrs);
+        $changes = $user->getDirty();
 
         if (!$user->isValid()) {
             throw new ValidationException($user->validator());
         }
 
         $user->save();
+
+        event(new UserUpdated($user, $changes));
 
         return fractal($user, new UserTransformer())->toArray();
     }
