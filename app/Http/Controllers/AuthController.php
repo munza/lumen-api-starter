@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Accounts;
+use App\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,11 +13,11 @@ class AuthController extends Controller
     /**
      * Controller constructor.
      *
-     * @param  \App\Accounts  $accounts
+     * @param  \App\Auth  $auth
      */
-    public function __construct(Accounts $accounts)
+    public function __construct(Auth $auth)
     {
-        $this->accounts = $accounts;
+        $this->auth = $auth;
     }
 
     /**
@@ -29,7 +29,7 @@ class AuthController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $token = $this->accounts->authenticateByEmailAndPassword(
+        $token = $this->auth->authenticateByEmailAndPassword(
             $request->input('email'),
             $request->input('password')
         );
@@ -44,7 +44,7 @@ class AuthController extends Controller
      */
     public function show(): JsonResponse
     {
-        $user = $this->accounts->getAuthenticatedUser();
+        $user = $this->auth->getAuthenticatedUser();
 
         return response()->json($user, Response::HTTP_OK);
     }
@@ -56,7 +56,7 @@ class AuthController extends Controller
      */
     public function update(): JsonResponse
     {
-        $token = $this->accounts->refreshAuthenticationToken();
+        $token = $this->auth->refreshAuthenticationToken();
 
         return response()->json($token, Response::HTTP_OK);
     }
@@ -68,7 +68,7 @@ class AuthController extends Controller
      */
     public function destroy(): JsonResponse
     {
-        $this->accounts->invalidateAuthenticationToken();
+        $this->auth->invalidateAuthenticationToken();
 
         return response()->json(null, Response::HTTP_NO_CONTENT);
     }
