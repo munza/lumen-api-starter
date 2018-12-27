@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new Dotenv\Dotenv(dirname(__DIR__)))->load();
-} catch (Dotenv\Exception\InvalidPathException $e) {
+    (new \Dotenv\Dotenv(dirname(__DIR__)))->load();
+} catch (\Dotenv\Exception\InvalidPathException $e) {
     //
 }
 
@@ -19,12 +19,12 @@ try {
 |
  */
 
-$app = new Laravel\Lumen\Application(
+$app = new \Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
 $app->configure('app');
-// $app->configure('auth');
+$app->configure('auth');
 // $app->configure('broadcasting');
 // $app->configure('cache');
 $app->configure('database');
@@ -49,13 +49,13 @@ $app->withEloquent();
  */
 
 $app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    \Illuminate\Contracts\Debug\ExceptionHandler::class,
+    \App\Exceptions\Handler::class
 );
 
 $app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
+    \Illuminate\Contracts\Console\Kernel::class,
+    \App\Console\Kernel::class
 );
 
 /*
@@ -73,9 +73,9 @@ $app->singleton(
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => \App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -89,10 +89,11 @@ $app->singleton(
  */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
-$app->register(App\Providers\EventServiceProvider::class);
+$app->register(\App\Providers\AuthServiceProvider::class);
+$app->register(\App\Providers\EventServiceProvider::class);
 $app->register(\Spatie\Fractal\FractalServiceProvider::class);
 $app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
+$app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 
 if ($app->environment() == 'local') {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);

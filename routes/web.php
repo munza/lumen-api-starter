@@ -23,9 +23,17 @@ $router->get('/', function () use ($router) {
     ], 200);
 });
 
-$router->get('/users', 'UserController@index');
-$router->post('/users', 'UserController@store');
-$router->get('/users/{id:[0-9]+}', 'UserController@show');
-$router->put('/users/{id:[0-9]+}', 'UserController@update');
-$router->patch('/users/{id:[0-9]+}', 'UserController@update');
-$router->delete('/users/{id:[0-9]+}', 'UserController@destroy');
+$router->post('/auth', 'AuthController@store');
+$router->group(['middleware' => 'auth:api', 'prefix' => 'auth'], function ($router) {
+    $router->get('/', 'AuthController@show');
+    $router->put('/', 'AuthController@update');
+    $router->delete('/', 'AuthController@destroy');
+});
+
+$router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($router) {
+    $router->get('/', 'UserController@index');
+    $router->post('/', 'UserController@store');
+    $router->get('/{id:[0-9]+}', 'UserController@show');
+    $router->put('/{id:[0-9]+}', 'UserController@update');
+    $router->delete('/{id:[0-9]+}', 'UserController@destroy');
+});
