@@ -17,6 +17,7 @@ trait ExceptionRenderable
      * Error transformer.
      *
      * @param  \Exception  $exception
+     *
      * @return array
      */
     public function transform(Exception $exception): array
@@ -83,6 +84,7 @@ trait ExceptionRenderable
      * Get the trace of the exception.
      *
      * @param  \Exception  $exception
+     *
      * @return array
      */
     private function getTrace(Exception $exception): array
@@ -95,6 +97,7 @@ trait ExceptionRenderable
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Exception  $exception
+     *
      * @return bool
      */
     private function isJsonRenderable(Request $request, Exception $exception): bool
@@ -110,6 +113,7 @@ trait ExceptionRenderable
      * Render JSON exception.
      *
      * @param  \Exception  $exception
+     *
      * @return \Illuminate\Http\JsonResponse
      */
     private function renderJsonException(Exception $exception): JsonResponse
@@ -117,6 +121,23 @@ trait ExceptionRenderable
         $error = $this->transform($exception);
 
         return response()->json(compact('error'))
-            ->setStatusCode($error['status']);
+            ->setStatusCode($error['status'])
+            ->withHeaders($this->getHeaders($exception));
+    }
+
+    /**
+     * Get the headers of the exception.
+     *
+     * @param  \Exception  $exception
+     *
+     * @return array
+     */
+    public function getHeaders(Exception $exception): array
+    {
+        if (method_exists($exception, 'getHeaders')) {
+            return $exception->getHeaders();
+        }
+
+        return [];
     }
 }
