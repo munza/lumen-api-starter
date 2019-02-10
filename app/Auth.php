@@ -2,9 +2,9 @@
 
 namespace App;
 
+use App\Exceptions\UnauthorizedException;
 use App\Transformers\TokenTransformer;
 use App\Transformers\UserTransformer;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class Auth
 {
@@ -19,7 +19,7 @@ class Auth
     public function authenticateByEmailAndPassword(string $email, string $password): array
     {
         if (!$token = app('auth')->attempt(compact('email', 'password'))) {
-            throw new UnauthorizedHttpException();
+            throw new UnauthorizedException();
         }
 
         return fractal($token, new TokenTransformer())->toArray();

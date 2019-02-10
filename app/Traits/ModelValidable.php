@@ -50,17 +50,48 @@ trait ModelValidable
      */
     private function getValidationRules(string $event = null): array
     {
+        $event = strtoupper($event);
+
         switch (true) {
+            case !method_exists($this, 'rules'):
+                return [];
+
             case $event === 'UPDATE':
             case $this->getKey() !== null:
-                return $this->rules()['UPDATE'];
+                return $this->mergeRuleWithDefault('UPDATE');
 
             case $event === null:
             case $event === 'CREATE':
             default:
-                return $this->rules()['CREATE'];
+                return $this->mergeRuleWithDefault('CREATE');
         }
 
         return [];
+    }
+
+    /**
+     * Merge validation rules wiht the default rules "*"
+     *
+     * @param string|null $event
+     *
+     * @return array
+     */
+    private function mergeRuleWithDefault(string $event = null): array
+    {
+        switch (true) {
+            case $event === null:
+                return isset($this->rules()['*'])
+                ? $this->rules()['*']
+                : $this->rules();
+
+            case !isset($this->rules()[$event]):
+                return $this->mergeRuleWithDefault();
+
+            case isset($this->rules()['*']):
+                return array_merge($this->rules()['*'], $this->rules()[$event]);
+
+            default:
+                return $this->rules()[$event];
+        }
     }
 }
