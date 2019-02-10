@@ -13,7 +13,7 @@ class TokenTransformer extends TransformerAbstract
      *
      * @return array
      */
-    public function transform(string $token)
+    public function transform(string $token): array
     {
         return [
             'access_token' => $token,

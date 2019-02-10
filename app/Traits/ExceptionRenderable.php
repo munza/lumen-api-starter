@@ -26,18 +26,16 @@ trait ExceptionRenderable
 
         switch (true) {
             case $exception instanceof ModelNotFoundException:
-                $error['status'] = Response::HTTP_NOT_FOUND;
+                $error['status'] = $error['status'] ?? Response::HTTP_NOT_FOUND;
                 break;
 
             case $exception instanceof NotFoundHttpException:
-                $error['message'] = 'Not found';
+                isset($error['message']) && !$error['message'] ?: $error['message'] = 'Not found';
                 break;
 
             case $exception instanceof ValidationException:
-                $error['details'] = $exception->errors();
+                $error['details'] = $error['details'] ?? $exception->errors();
                 break;
-
-                // Add more exceptions here...
         }
 
         // Add exception trace for debug.
@@ -60,9 +58,12 @@ trait ExceptionRenderable
      */
     private function defaultErrorResponse(Exception $exception): array
     {
-        $error = ['message' => $exception->getMessage() ?: 'Unknown error'];
+        $error = [];
 
-        // Automatically set the attributes from the exception.
+        // Set the message from the exception.
+        $error['message'] = $exception->getMessage() ?: 'Unknown error';
+
+        // Set the status code from the exception.
         switch (true) {
 
             case method_exists($exception, 'getStatusCode'):
@@ -75,6 +76,17 @@ trait ExceptionRenderable
 
             default:
                 $error['status'] = Response::HTTP_INTERNAL_SERVER_ERROR;
+        }
+
+        // Set the error details from the exception.
+        switch (true) {
+            case method_exists($exception, 'getDetails'):
+                $error['details'] = $exception->getDetails();
+                break;
+
+            case method_exists($exception, 'errors'):
+                $error['details'] = $exception->errors();
+                break;
         }
 
         return $error;
