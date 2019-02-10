@@ -93,7 +93,7 @@ This project has been rewritten from scratch. If you are looking for the previou
 
     namespace App\Transformers;
 
-    user App\User;
+    use App\User;
     use League\Fractal\TransformerAbstract;
 
     class UserTransformer extends TransformerAbstract
@@ -104,7 +104,7 @@ This project has been rewritten from scratch. If you are looking for the previou
          * @param  \App\User $user
             * @return array
             */
-        public function transform(User $user)
+        public function transform(User $user): array
         {
             return [
                 'id' => (int) $user->id,
@@ -152,52 +152,39 @@ This project has been rewritten from scratch. If you are looking for the previou
     }
     ```
 
-- Customize exception response at `app/Traits/ExceptionRenderable.php` file.
+- Exception message, status code and details can now be easily displayed by declaring these as methods in an exception class.
 
     ```php
     <?php
 
-    namespace App\Traits;
+    namespace App\Exceptions;
 
-    // use declarations...
+    use Symfony\Component\HttpKernel\Exception\HttpException;
 
-    trait ExceptionRenderable
+    class CustomException extends HttpException
     {
-        /**
-        * Error transformer.
-        *
-        * @param  \Exception  $exception
-        *
-        * @return array
-        */
-        public function transform(Exception $exception): array
+        public function getMessage(): string
         {
-            $error = $this->defaultErrorResponse($exception);
+            return 'Custom message';
+        }
 
-            switch (true) {
-                case $exception instanceof ModelNotFoundException:
-                    $error['status'] = Response::HTTP_NOT_FOUND;
-                    break;
+        public function getStatusCode(): int
+        {
+            return 500;
+        }
 
-                case $exception instanceof NotFoundHttpException:
-                    $error['message'] = 'Not found';
-                    break;
-
-                case $exception instanceof ValidationException:
-                    $error['details'] = $exception->errors();
-                    break;
-
-                    // Add more exceptions here...
-            }
-
-            // remaining codes
+        public function getDetails(): array
+        {
+            return [];
         }
     }
     ```
 
 ### Todo
 
+- [x] Remove the customization feature from error trait.
 - [ ] Move all the extended features inside a package.
+- [ ] Add the feature to use a transformer for error response.
 
 ### Issues
 
