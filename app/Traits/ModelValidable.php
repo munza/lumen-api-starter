@@ -20,7 +20,7 @@ trait ModelValidable
      *
      * @return bool
      */
-    public function isValid(string $event = null)
+    public function isValid(string $event = null): bool
     {
         $this->validator = app('validator')->make($this->attributes, $this->getValidationRules($event));
 
