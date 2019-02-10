@@ -42,7 +42,7 @@ class Auth
      *
      * @return array
      */
-    public function refreshAuthenticationToken()
+    public function refreshAuthenticationToken(): array
     {
         $token = app('auth')->refresh();
 
