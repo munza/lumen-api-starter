@@ -10,6 +10,8 @@ class UserTransformer extends TransformerAbstract
     /**
      * A Fractal transformer.
      *
+     * @param  \App\Models\User  $user
+     *
      * @return array
      */
     public function transform(User $user): array
