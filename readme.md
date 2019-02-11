@@ -76,7 +76,7 @@ This project has been rewritten from scratch. If you are looking for the previou
          * Controller constructor.
          *
          * @param  \App\Accounts  $accounts
-        */
+         */
         public function __construct(Accounts $accounts)
         {
             $this->accounts = $accounts;
@@ -102,8 +102,8 @@ This project has been rewritten from scratch. If you are looking for the previou
          * Transform object to array.
          *
          * @param  \App\User $user
-            * @return array
-            */
+         * @return array
+         */
         public function transform(User $user): array
         {
             return [
@@ -132,7 +132,7 @@ This project has been rewritten from scratch. If you are looking for the previou
          * Controller constructor.
          *
          * @param  \App\Accounts  $accounts
-        */
+         */
         public function __construct(Accounts $accounts)
         {
             $this->accounts = $accounts;
@@ -142,7 +142,7 @@ This project has been rewritten from scratch. If you are looking for the previou
          * List of all users.
          *
          * @return \Illuminate\Http\JsonResponse
-        */
+         */
         public function index(): JsonResponse
         {
             $users = $this->accounts->getUsersWithPagination($request);
@@ -173,7 +173,7 @@ This project has been rewritten from scratch. If you are looking for the previou
             return 500;
         }
 
-        public function getDetails(): array
+        public function getDetails(): ?array
         {
             return [];
         }
