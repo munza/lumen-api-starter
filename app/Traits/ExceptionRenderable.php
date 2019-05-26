@@ -3,105 +3,29 @@
 namespace App\Traits;
 
 use Exception;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Validation\ValidationException;
 use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use League\Fractal\TransformerAbstract;
+use League\Fractal\Serializer\SerializerAbstract;
 
 trait ExceptionRenderable
 {
     /**
-     * Error transformer.
-     *
-     * @param  \Exception  $exception
-     *
-     * @return array
-     */
-    public function transform(Exception $exception): array
-    {
-        $error = $this->defaultErrorResponse($exception);
-
-        switch (true) {
-            case $exception instanceof ModelNotFoundException:
-                $error['status'] = $error['status'] ?? Response::HTTP_NOT_FOUND;
-                break;
-
-            case $exception instanceof NotFoundHttpException:
-                isset($error['message']) && !$error['message'] ?: $error['message'] = 'Not found';
-                break;
-
-            case $exception instanceof ValidationException:
-                $error['details'] = $error['details'] ?? $exception->errors();
-                break;
-        }
-
-        // Add exception trace for debug.
-        if (config('app.debug')) {
-            $error['debug'] = [
-                'exception' => class_basename($exception),
-                'trace' => $this->getTrace($exception),
-            ];
-        }
-
-        return $error;
-    }
-
-    /**
-     * Build a default error response body.
+     * Response the exception in JSON.
      *
      * @param \Exception $exception
+     * @param \League\Fractal\TransformerAbstract $transformer
+     * @param \League\Fractal\Serializer\SerializerAbstract $serializer
      *
-     * @return array
+     * @return \Illuminate\Http\JsonResponse
      */
-    private function defaultErrorResponse(Exception $exception): array
+    public function jsonResponse(Exception $exception, TransformerAbstract $transformer, SerializerAbstract $serializer): JsonResponse
     {
-        $error = [];
+        $error = fractal($exception, new $transformer(), new $serializer)->toArray();
 
-        // Set the message from the exception.
-        $error['message'] = $exception->getMessage() ?: 'Unknown error';
-
-        // Set the status code from the exception.
-        switch (true) {
-
-            case method_exists($exception, 'getStatusCode'):
-                $error['status'] = $exception->getStatusCode();
-                break;
-
-            case property_exists($exception, 'status'):
-                $error['status'] = $exception->status;
-                break;
-
-            default:
-                $error['status'] = Response::HTTP_INTERNAL_SERVER_ERROR;
-        }
-
-        // Set the error details from the exception.
-        switch (true) {
-            case method_exists($exception, 'getDetails'):
-                $error['details'] = $exception->getDetails();
-                break;
-
-            case method_exists($exception, 'errors'):
-                $error['details'] = $exception->errors();
-                break;
-        }
-
-        return $error;
-    }
-
-    /**
-     * Get the trace of the exception.
-     *
-     * @param  \Exception  $exception
-     *
-     * @return array
-     */
-    private function getTrace(Exception $exception): array
-    {
-        return preg_split("/\n/", $exception->getTraceAsString());
+        return response()->json($error)
+            ->setStatusCode($this->getStatusCode($error))
+            ->withHeaders($this->getHeaders($exception));
     }
 
     /**
@@ -112,7 +36,7 @@ trait ExceptionRenderable
      *
      * @return bool
      */
-    private function isJsonRenderable(Request $request, Exception $exception): bool
+    public function isJsonRenderable($request, Exception $exception): bool
     {
         if (config('app.debug') && $exception instanceof FatalThrowableError) {
             return false;
@@ -122,19 +46,23 @@ trait ExceptionRenderable
     }
 
     /**
-     * Render JSON exception.
+     * Get the status code of the exception.
      *
-     * @param  \Exception  $exception
+     * @param  array  $error
      *
-     * @return \Illuminate\Http\JsonResponse
+     * @return int
      */
-    private function renderJsonException(Exception $exception): JsonResponse
+    public function getStatusCode(array $error): int
     {
-        $error = $this->transform($exception);
+        if ($status = array_get($error, 'data.status')) {
+            return $status;
+        }
 
-        return response()->json(compact('error'))
-            ->setStatusCode($error['status'])
-            ->withHeaders($this->getHeaders($exception));
+        if ($status = array_get($error, 'error.status')) {
+            return $status;
+        }
+
+        return Response::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     /**
@@ -144,7 +72,7 @@ trait ExceptionRenderable
      *
      * @return array
      */
-    public function getHeaders(Exception $exception): array
+    private function getHeaders(Exception $exception): array
     {
         if (method_exists($exception, 'getHeaders')) {
             return $exception->getHeaders();

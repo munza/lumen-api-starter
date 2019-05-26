@@ -3,10 +3,11 @@
 namespace App\Exceptions;
 
 use App\Traits\ExceptionRenderable;
+use App\Transformers\ErrorTransformer;
+use App\Serializers\ErrorSerializer;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,7 +52,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception): Response
     {
         if ($this->isJsonRenderable($request, $exception)) {
-            return $this->renderJsonException($exception);
+            return $this->jsonResponse($exception, new ErrorTransformer(), new ErrorSerializer());
         }
 
         return parent::render($request, $exception);
