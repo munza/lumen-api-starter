@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\Response;
+use Carbon\Carbon;
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -18,9 +21,9 @@ $router->get('/', function () use ($router) {
         'framework' => $router->app->version(),
         'environment' => config('app.env'),
         'debug_mode' => config('app.debug'),
-        'timestamp' => \Carbon\Carbon::now()->toDateTimeString(),
+        'timestamp' => Carbon::now()->toDateTimeString(),
         'timezone' => config('app.timezone'),
-    ], 200);
+    ], Response::HTTP_OK);
 });
 
 $router->post('/auth', 'AuthController@store');
