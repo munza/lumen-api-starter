@@ -8,7 +8,6 @@ use App\Models\User;
 use App\Transformers\UserTransformer;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
-use Spatie\Fractal\Fractal;
 
 class Accounts
 {

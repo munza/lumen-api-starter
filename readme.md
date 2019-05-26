@@ -1,42 +1,43 @@
 # Lumen API Starter
 
-A starter project to develop API with Lumen 5.7 (***Updated***).
+A starter project to develop API with Lumen 5.7 (**_Updated_**).
 
 This project has been rewritten from scratch. If you are looking for the previous version which was made for Lumen v5.4 please use this [link](https://github.com/munza/lumen-api-starter/tree/v5.4) or navigate to branch `v5.4`.
 
 ### Included Packages
-- [spatie/laravel-fractal@^5.4](https://github.com/spatie/laravel-fractal)
-- [tymon/jwt-auth@1.0.0-rc.3](https://github.com/tymondesigns/jwt-auth)
-- [spatie/laravel-query-builder@^1.12](https://github.com/spatie/laravel-query-builder)
-- [flipbox/lumen-generator@^5.6](https://github.com/flipboxstudio/lumen-generator)
+
+-   [spatie/laravel-fractal@^5.4](https://github.com/spatie/laravel-fractal)
+-   [tymon/jwt-auth@1.0.0-rc.3](https://github.com/tymondesigns/jwt-auth)
+-   [spatie/laravel-query-builder@^1.12](https://github.com/spatie/laravel-query-builder)
+-   [flipbox/lumen-generator@^5.6](https://github.com/flipboxstudio/lumen-generator)
 
 ### Installation
 
-- Clone the Repo:
-    - `git clone git@github.com:munza/lumen-api-starter.git`
-    - `git clone https://github.com/munza/lumen-api-starter.git`
-- `cd lumen-api-starter`
-- `composer create-project`
-- `php artisan key:generate`
-- `php artisan jwt:secret`
-- `php artisan migrate`
-- `php artisan serve`
+-   Clone the Repo:
+    -   `git clone git@github.com:munza/lumen-api-starter.git`
+    -   `git clone https://github.com/munza/lumen-api-starter.git`
+-   `cd lumen-api-starter`
+-   `composer create-project`
+-   `php artisan key:generate`
+-   `php artisan jwt:secret`
+-   `php artisan migrate`
+-   `php artisan serve`
 
 #### Create new user
 
-- `php artisan ti`
-- `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'secret'])`
+-   `php artisan ti`
+-   `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'secret'])`
 
 ### Configuration
 
-- Edit `.env` file for database connection configuration.
-- Edit the files located under `config` directory for configuration.
+-   Edit `.env` file for database connection configuration.
+-   Edit the files located under `config` directory for configuration.
 
 ### Usage
 
 #### Adding a new resource endpoint
 
-- Add endpoint in `routes/web.php`.
+-   Add endpoint in `routes/web.php`.
 
     ```php
     $router->group(['middleware' => 'auth:api'], function ($router) {
@@ -44,11 +45,11 @@ This project has been rewritten from scratch. If you are looking for the previou
     });
     ```
 
-- Add controller with `php artisan make:controller {name}` command
+-   Add controller with `php artisan make:controller {name}` command
 
-- Add model at `php artisan make:model {name}`. You can use `-m` flag to add migration file and `-f` flag for factory file.
+-   Add model at `php artisan make:model {name}`. You can use `-m` flag to add migration file and `-f` flag for factory file.
 
-- Add service at `app` directory.
+-   Add service at `app` directory.
 
     ```php
     <?php
@@ -61,11 +62,11 @@ This project has been rewritten from scratch. If you are looking for the previou
     }
     ```
 
-- Load the service in controller.
+-   Load the service in controller.
 
     ```php
     <?php
-    
+
     namespace App\Http\Controllers;
 
     use App\Accounts;
@@ -86,7 +87,9 @@ This project has been rewritten from scratch. If you are looking for the previou
     }
     ```
 
-- Add transformers at `app/Transformers` directory or use the command `php artisan make:transformer {name}`.
+    You can also use Facade for the services. But I do not prefer to use Facade in Lumen personally.
+
+-   Add transformers at `app/Transformers` directory or use the command `php artisan make:transformer {name}`.
 
     ```php
     <?php
@@ -114,7 +117,7 @@ This project has been rewritten from scratch. If you are looking for the previou
     }
     ```
 
-- Render JSON in controllers
+-   Render JSON in controllers
 
     ```php
     <?php
@@ -152,7 +155,7 @@ This project has been rewritten from scratch. If you are looking for the previou
     }
     ```
 
-- Exception message, status code and details can now be easily displayed by declaring these as methods in an exception class.
+-   Exception message, status code and details can be displayed by declaring these as methods in an exception class.
 
     ```php
     <?php
@@ -182,9 +185,9 @@ This project has been rewritten from scratch. If you are looking for the previou
 
 ### Todo
 
-- [x] Remove the customization feature from error trait.
-- [ ] Move all the extended features inside a package.
-- [ ] Add the feature to use a transformer for error response.
+-   [x] Remove the customization feature from error trait.
+-   [ ] Move all the extended features inside a package.
+-   [ ] Add the feature to use a transformer for error response.
 
 ### Issues
 
