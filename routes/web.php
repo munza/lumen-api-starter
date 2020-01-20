@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Http\Response;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 /*
 |--------------------------------------------------------------------------
