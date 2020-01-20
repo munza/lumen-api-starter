@@ -18,21 +18,24 @@ trait QueryFilterable
     {
         $query = new QueryBuilder($this->query(), $request);
 
-        switch (true) {
-            case property_exists($this, 'filterable'):
-                $query = $query->allowedFilters($this->filterable);
+        if (property_exists($this, 'filterable')) {
+            $query = $query->allowedFilters($this->filterable);
+        }
 
-            case property_exists($this, 'sortable'):
-                $query = $query->allowedSorts($this->sortable);
+        if (property_exists($this, 'sortable')) {
+            $query = $query->allowedSorts($this->sortable);
+        }
 
-            case property_exists($this, 'includable'):
-                $query = $query->allowedIncludes($this->includable);
+        if (property_exists($this, 'includable')) {
+            $query = $query->allowedIncludes($this->includable);
+        }
 
-            case property_exists($this, 'visible'):
-                $query = $query->allowedFields($this->visible);
+        if (property_exists($this, 'visible')) {
+            $query = $query->allowedFields($this->visible);
+        }
 
-            case property_exists($this, 'appendable'):
-                $query = $query->allowedAppends($this->appendable);
+        if (property_exists($this, 'appendable')) {
+            $query = $query->allowedAppends($this->appendable);
         }
 
         return $query;

@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Validation\Validator;
 
-trait ModelValidable
+trait ModelValidatable
 {
     /**
      * The model validator instance.
@@ -81,8 +81,8 @@ trait ModelValidable
         switch (true) {
             case $event === null:
                 return isset($this->rules()['*'])
-                ? $this->rules()['*']
-                : $this->rules();
+                    ? $this->rules()['*']
+                    : $this->rules();
 
             case !isset($this->rules()[$event]):
                 return $this->mergeRuleWithDefault();
