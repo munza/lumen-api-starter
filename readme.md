@@ -1,15 +1,13 @@
 # Lumen API Starter
 
-A starter project to develop API with Lumen 5.7 (**_Updated_**).
-
-This project has been rewritten from scratch. If you are looking for the previous version which was made for Lumen v5.4 please use this [link](https://github.com/munza/lumen-api-starter/tree/v5.4) or navigate to branch `v5.4`.
+A starter project to develop API with Lumen 6.\* (**_Updated_**).
 
 ### Included Packages
 
--   [spatie/laravel-fractal@^5.4](https://github.com/spatie/laravel-fractal)
--   [tymon/jwt-auth@1.0.0-rc.3](https://github.com/tymondesigns/jwt-auth)
--   [spatie/laravel-query-builder@^1.12](https://github.com/spatie/laravel-query-builder)
--   [flipbox/lumen-generator@^5.6](https://github.com/flipboxstudio/lumen-generator)
+-   [spatie/laravel-fractal@^5.6](https://github.com/spatie/laravel-fractal)
+-   [tymon/jwt-auth@1.0.0-rc.5](https://github.com/tymondesigns/jwt-auth)
+-   [spatie/laravel-query-builder@^2.5](https://github.com/spatie/laravel-query-builder)
+-   [flipbox/lumen-generator@^6.0](https://github.com/flipboxstudio/lumen-generator)
 
 ### Installation
 
