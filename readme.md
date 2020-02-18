@@ -5,6 +5,7 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 ### Included Packages
 
 -   [flipbox/lumen-generator@^6.0](https://github.com/flipboxstudio/lumen-generator)
+-   [spatie/laravel-cors@^1.6](https://github.com/spatie/laravel-cors)
 -   [spatie/laravel-fractal@^5.6](https://github.com/spatie/laravel-fractal)
 -   [spatie/laravel-query-builder@^2.0](https://github.com/spatie/laravel-query-builder)
 -   [tymon/jwt-auth@^1.0.0-rc.5](https://github.com/tymondesigns/jwt-auth)
@@ -180,6 +181,10 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
         }
     }
     ```
+
+#### Using CORS
+
+Please check [spatie/laravel-cors](https://github.com/spatie/laravel-cors) in Github for the usage details.
 
 ### Todo
 
