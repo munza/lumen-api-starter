@@ -188,7 +188,7 @@ Please check [spatie/laravel-cors](https://github.com/spatie/laravel-cors) in Gi
 
 #### Using Docker
 
-Docker can be run with `docker-compose up -d` command. After that, any command stated above can be executed with Docker. The formant is — `docker-compose php exec php <command>` or `docker exec lumen-php <command>`. For example database can be migrated with `docker-compose php exec php artisan migrate`.
+Docker can be run with `docker-compose up -d` command. After that, any command stated above can be executed with Docker. The format is — `docker-compose php exec <command>` or `docker exec lumen-php <command>`. For example database can be migrated with `docker-compose php exec php artisan migrate`.
 
 To execute an interactive shell, add `-it` flag with the exec command like `docker exec -it lumen-php <command>`.
 
