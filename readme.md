@@ -4,10 +4,10 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 
 ### Included Packages
 
--   [spatie/laravel-fractal@^5.6](https://github.com/spatie/laravel-fractal)
--   [tymon/jwt-auth@1.0.0-rc.5](https://github.com/tymondesigns/jwt-auth)
--   [spatie/laravel-query-builder@^2.5](https://github.com/spatie/laravel-query-builder)
 -   [flipbox/lumen-generator@^6.0](https://github.com/flipboxstudio/lumen-generator)
+-   [spatie/laravel-fractal@^5.6](https://github.com/spatie/laravel-fractal)
+-   [spatie/laravel-query-builder@^2.0](https://github.com/spatie/laravel-query-builder)
+-   [tymon/jwt-auth@^1.0.0-rc.5](https://github.com/tymondesigns/jwt-auth)
 
 ### Installation
 
@@ -24,7 +24,7 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 #### Create new user
 
 -   `php artisan ti`
--   `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'secret'])`
+-   `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'password'])`
 
 ### Configuration
 
@@ -185,7 +185,7 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 
 -   [x] Remove the customization feature from error trait.
 -   [ ] Move all the extended features inside a package.
--   [ ] Add the feature to use a transformer for error response.
+-   [ ] Use a transformer for error response.
 
 ### Issues
 
