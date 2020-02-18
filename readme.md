@@ -186,9 +186,17 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 
 Please check [spatie/laravel-cors](https://github.com/spatie/laravel-cors) in Github for the usage details.
 
+#### Using Docker
+
+Docker can be run with `docker-compose up -d` command. After that, any command stated above can be executed with Docker. The formant is — `docker-compose php exec php <command>` or `docker exec lumen-php <command>`. For example database can be migrated with `docker-compose php exec php artisan migrate`.
+
+To execute an interactive shell, add `-it` flag with the exec command like `docker exec -it lumen-php <command>`.
+
+_Do not use Docker Compose while deploying in production environment._
+
 ### Todo
 
--   [x] Remove the customization feature from error trait.
+-   [x] Remove the customization feature from error trait. 
 -   [ ] Move all the extended features inside a package.
 -   [x] Use a transformer for error response.
 

@@ -1,0 +1,9 @@
+.git/
+.docker/
+.env
+bootstrap/cache/*
+storage/app/*
+storage/framework/cache/*
+storage/framework/views/*
+storage/logs/*
+vendor/
