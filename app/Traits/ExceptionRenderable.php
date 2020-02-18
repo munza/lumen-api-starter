@@ -4,9 +4,12 @@ namespace App\Traits;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-use League\Fractal\TransformerAbstract;
+use Illuminate\Http\Response;
+use Illuminate\Support\Arr;
 use League\Fractal\Serializer\SerializerAbstract;
+use League\Fractal\TransformerAbstract;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 
 trait ExceptionRenderable
 {
@@ -38,7 +41,7 @@ trait ExceptionRenderable
      */
     public function isJsonRenderable($request, Exception $exception): bool
     {
-        if (config('app.debug') && $exception instanceof FatalThrowableError) {
+        if (config('app.debug') && $this->isFatalError($exception)) {
             return false;
         }
 
@@ -54,11 +57,11 @@ trait ExceptionRenderable
      */
     public function getStatusCode(array $error): int
     {
-        if ($status = array_get($error, 'data.status')) {
+        if ($status = Arr::get($error, 'data.status')) {
             return $status;
         }
 
-        if ($status = array_get($error, 'error.status')) {
+        if ($status = Arr::get($error, 'error.status')) {
             return $status;
         }
 
@@ -75,9 +78,14 @@ trait ExceptionRenderable
     private function getHeaders(Exception $exception): array
     {
         if (method_exists($exception, 'getHeaders')) {
-            return $exception->getHeaders();
+            return call_user_func([$exception, 'getHeaders']);
         }
 
         return [];
+    }
+
+    private function isFatalError(Exception $exception): bool
+    {
+        return $exception instanceof FatalError || $exception instanceof FatalThrowableError;
     }
 }

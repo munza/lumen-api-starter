@@ -25,8 +25,10 @@ $app->configure('app');
 $app->configure('auth');
 // $app->configure('broadcasting');
 // $app->configure('cache');
+$app->configure('cors');
 $app->configure('database');
 // $app->configure('filesystems');
+$app->configure('jwt');
 // $app->configure('logging');
 // $app->configure('queue');
 // $app->configure('services');
@@ -47,12 +49,12 @@ $app->withEloquent();
 */
 
 $app->singleton(
-    Illuminate\Contracts\Debug\ExceptionHandler::class,
+    \Illuminate\Contracts\Debug\ExceptionHandler::class,
     App\Exceptions\Handler::class
 );
 
 $app->singleton(
-    Illuminate\Contracts\Console\Kernel::class,
+    \Illuminate\Contracts\Console\Kernel::class,
     App\Console\Kernel::class
 );
 
@@ -67,9 +69,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//     App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    \Spatie\Cors\Cors::class,
+]);
 
 $app->routeMiddleware([
     'auth' => \App\Http\Middleware\Authenticate::class,
@@ -92,6 +94,7 @@ $app->register(\App\Providers\EventServiceProvider::class);
 $app->register(\Spatie\Fractal\FractalServiceProvider::class);
 $app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
+$app->register(\Spatie\Cors\CorsServiceProvider::class);
 
 if ($app->environment() == 'local') {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
