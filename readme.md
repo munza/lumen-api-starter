@@ -190,7 +190,7 @@ Please check [spatie/laravel-cors](https://github.com/spatie/laravel-cors) in Gi
 
 -   [x] Remove the customization feature from error trait.
 -   [ ] Move all the extended features inside a package.
--   [ ] Use a transformer for error response.
+-   [x] Use a transformer for error response.
 
 ### Issues
 

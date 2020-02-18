@@ -58,7 +58,7 @@ class ErrorTransformer extends TransformerAbstract
             case $exception instanceof NotFoundHttpException:
                 return "Not found";
         }
-        
+
         return "Unknown error";
     }
 
@@ -83,7 +83,7 @@ class ErrorTransformer extends TransformerAbstract
             case $exception instanceof ModelNotFoundException:
             case $exception instanceof NotFoundHttpException:
                 return Response::HTTP_NOT_FOUND;
-            
+
             case $exception instanceof ValidationException:
                 return Response::HTTP_UNPROCESSABLE_ENTITY;
         }
