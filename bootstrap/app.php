@@ -27,6 +27,7 @@ $app->configure('auth');
 // $app->configure('cache');
 $app->configure('database');
 // $app->configure('filesystems');
+$app->configure('jwt');
 // $app->configure('logging');
 // $app->configure('queue');
 // $app->configure('services');
