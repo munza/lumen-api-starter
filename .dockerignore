@@ -1,6 +1,7 @@
 .git/
 .docker/
 .env
+docker-composer.yml
 bootstrap/cache/*
 storage/app/*
 storage/framework/cache/*

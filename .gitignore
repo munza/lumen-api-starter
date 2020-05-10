@@ -1,5 +1,6 @@
 /vendor
 /.idea
+docker-compose.override.yml
 Homestead.json
 Homestead.yaml
 .env

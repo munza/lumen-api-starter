@@ -79,7 +79,9 @@ class Accounts
     public function updateUserById(int $id, array $attrs): array
     {
         $user = User::findOrFail($id);
+
         $user->fill($attrs);
+
         $changes = $user->getDirty();
 
         if (!$user->isValid()) {
