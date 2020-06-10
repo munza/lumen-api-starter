@@ -1,6 +1,6 @@
 # Lumen API Starter
 
-A starter project to develop API with Lumen 6.\* (**_Updated_**).
+A starter template to develop API with Lumen 7.
 
 ### Included Packages
 
