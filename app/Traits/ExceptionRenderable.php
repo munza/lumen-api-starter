@@ -2,14 +2,14 @@
 
 namespace App\Traits;
 
+use Error;
 use Exception;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
 use League\Fractal\Serializer\SerializerAbstract;
 use League\Fractal\TransformerAbstract;
-use Symfony\Component\Debug\Exception\FatalThrowableError;
-use Symfony\Component\ErrorHandler\Error\FatalError;
 
 trait ExceptionRenderable
 {
@@ -22,7 +22,7 @@ trait ExceptionRenderable
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function jsonResponse(Exception $exception, TransformerAbstract $transformer, SerializerAbstract $serializer): JsonResponse
+    public function renderJson(Exception $exception, TransformerAbstract $transformer, SerializerAbstract $serializer): JsonResponse
     {
         $error = fractal($exception, new $transformer(), new $serializer)->toArray();
 
@@ -39,7 +39,7 @@ trait ExceptionRenderable
      *
      * @return bool
      */
-    public function isJsonRenderable($request, Exception $exception): bool
+    public function isJsonRenderable(Request $request, $exception): bool
     {
         if (config('app.debug') && $this->isFatalError($exception)) {
             return false;
@@ -84,8 +84,8 @@ trait ExceptionRenderable
         return [];
     }
 
-    private function isFatalError(Exception $exception): bool
+    private function isFatalError($exception): bool
     {
-        return $exception instanceof FatalError || $exception instanceof FatalThrowableError;
+        return $exception instanceof Error;
     }
 }

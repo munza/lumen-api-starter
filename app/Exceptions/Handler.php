@@ -55,7 +55,7 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $exception)
     {
         if ($this->isJsonRenderable($request, $exception)) {
-            return $this->jsonResponse($exception, new ErrorTransformer(), new ErrorSerializer());
+            return $this->renderJson($exception, new ErrorTransformer(), new ErrorSerializer());
         }
 
         return parent::render($request, $exception);
