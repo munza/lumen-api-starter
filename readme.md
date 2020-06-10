@@ -5,10 +5,10 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 ### Included Packages
 
 -   [flipbox/lumen-generator@^6.0](https://github.com/flipboxstudio/lumen-generator)
--   [spatie/laravel-cors@^1.6](https://github.com/spatie/laravel-cors)
--   [spatie/laravel-fractal@^5.6](https://github.com/spatie/laravel-fractal)
--   [spatie/laravel-query-builder@^2.0](https://github.com/spatie/laravel-query-builder)
--   [tymon/jwt-auth@^1.0.0-rc.5](https://github.com/tymondesigns/jwt-auth)
+-   [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
+-   [spatie/laravel-fractal@^5.7](https://github.com/spatie/laravel-fractal)
+-   [spatie/laravel-query-builder@^2.8](https://github.com/spatie/laravel-query-builder)
+-   [tymon/jwt-auth@^1.0](https://github.com/tymondesigns/jwt-auth)
 
 ### Installation
 
@@ -184,21 +184,17 @@ A starter project to develop API with Lumen 6.\* (**_Updated_**).
 
 #### Using CORS
 
-Please check [spatie/laravel-cors](https://github.com/spatie/laravel-cors) in Github for the usage details.
+Please check [fruitcake/laravel-cors](https://github.com/fruitcake/laravel-cors) in Github for the usage details.
 
 #### Using Docker
 
-Docker can be run with `docker-compose up -d` command. After that, any command stated above can be executed with Docker. The format is — `docker-compose php exec <command>` or `docker exec lumen-php <command>`. For example database can be migrated with `docker-compose php exec php artisan migrate`.
+Docker can be run with `docker-compose up -d` command. After that, any command stated above can be executed with Docker. The format is — `docker-compose app exec <command>` or `docker exec lumen-app <command>`. For example database can be migrated with `docker-compose app exec php artisan migrate`.
 
-To execute an interactive shell, add `-it` flag with the exec command like `docker exec -it lumen-php <command>`.
-
-_Do not use Docker Compose while deploying in production environment._
+_I would suggest not to use Docker Compose while deploying in production._
 
 ### Todo
 
--   [x] Remove the customization feature from error trait. 
 -   [ ] Move all the extended features inside a package.
--   [x] Use a transformer for error response.
 
 ### Issues
 
