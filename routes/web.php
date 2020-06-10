@@ -33,7 +33,7 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'auth'], function ($rout
     $router->delete('/', 'AuthController@destroy');
 });
 
-$router->group(['middleware' => [], 'prefix' => 'users'], function ($router) {
+$router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($router) {
     $router->get('/', 'UserController@index');
     $router->post('/', 'UserController@store');
     $router->get('/{id:[0-9]+}', 'UserController@show');
