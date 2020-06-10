@@ -18,9 +18,9 @@ class Accounts
      *
      * @return array
      */
-    public function getUsersWithPagination(Request $request): array
+    public function getUsers(Request $request): array
     {
-        $users = User::filter($request)->paginate();
+        $users = User::filter($request)->paginate($request->get('per_page', 20));
 
         return fractal($users, new UserTransformer())->toArray();
     }

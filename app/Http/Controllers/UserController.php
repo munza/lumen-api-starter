@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $users = $this->accounts->getUsersWithPagination($request);
+        $users = $this->accounts->getUsers($request);
 
         return response()->json($users, Response::HTTP_OK);
     }
