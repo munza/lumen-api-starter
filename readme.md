@@ -1,10 +1,10 @@
 # Lumen API Starter
 
-A starter project to develop API with Lumen 6.\* (**_Updated_**).
+A starter template to develop API with Lumen 7.
 
 ### Included Packages
 
--   [flipbox/lumen-generator@^6.0](https://github.com/flipboxstudio/lumen-generator)
+-   [flipbox/lumen-generator@^7.0](https://github.com/flipboxstudio/lumen-generator)
 -   [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
 -   [spatie/laravel-fractal@^5.7](https://github.com/spatie/laravel-fractal)
 -   [spatie/laravel-query-builder@^2.8](https://github.com/spatie/laravel-query-builder)
