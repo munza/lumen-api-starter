@@ -38,5 +38,6 @@ $router->group(['middleware' => 'auth:api', 'prefix' => 'users'], function ($rou
     $router->post('/', 'UserController@store');
     $router->get('/{id:[0-9]+}', 'UserController@show');
     $router->put('/{id:[0-9]+}', 'UserController@update');
+    $router->patch('/{id:[0-9]+}', 'UserController@update');
     $router->delete('/{id:[0-9]+}', 'UserController@destroy');
 });

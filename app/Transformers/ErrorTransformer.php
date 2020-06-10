@@ -2,30 +2,30 @@
 
 namespace App\Transformers;
 
-use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Response;
 use Illuminate\Validation\ValidationException;
 use League\Fractal\TransformerAbstract;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Throwable;
 
 class ErrorTransformer extends TransformerAbstract
 {
     /**
      * A Fractal transformer.
      *
-     * @param  \Exception  $user
+     * @param  Throwable  $user
      *
      * @return array
      */
-    public function transform(Exception $exception): array
+    public function transform(Throwable $exception): array
     {
         $error = [
-            'message' => (string) $this->getMessage($exception),
-            'status' => (string) $this->getStatusCode($exception),
+            'message' => (string) $this->parseMessage($exception),
+            'status' => (int) $this->parseStatusCode($exception),
         ];
 
-        if (count($details = $this->getDetails($exception))) {
+        if (count($details = $this->parseDetails($exception))) {
             $error['details'] = $details;
         }
 
@@ -33,7 +33,7 @@ class ErrorTransformer extends TransformerAbstract
             if (config('app.debug')) {
                 $error['debug'] = [
                     'exception' => class_basename($exception),
-                    'trace' => $this->getTrace($exception),
+                    'trace' => $this->parseTrace($exception),
                 ];
             }
         }
@@ -44,33 +44,50 @@ class ErrorTransformer extends TransformerAbstract
     /**
      * Get the message of the exception.
      *
-     * @param  \Exception  $exception
+     * @param  Throwable  $exception
      *
      * @return string
      */
-    protected function getMessage(Exception $exception): string
+    protected function parseMessage(Throwable $exception): string
     {
-        if (method_exists($exception, 'getMessage') and ($message = $exception->getMessage()) != '') {
-            return $message;
+        if (!config('app.debug') and Response::HTTP_INTERNAL_SERVER_ERROR === $this->parseStatusCode($exception)) {
+            return "Something went wrong!";
         }
 
         switch (true) {
             case $exception instanceof NotFoundHttpException:
                 return "Not found";
+
+            // Add custom messages for other exceptions.
         }
 
-        return "Unknown error";
+        if (method_exists($exception, 'getMessage') and ($message = $exception->getMessage()) != '') {
+            return $message;
+        }
+
+        return "Something went wrong!";
     }
 
     /**
      * Get the status code of the exception.
      *
-     * @param  \Exception  $exception
+     * @param  Throwable  $exception
      *
      * @return int
      */
-    protected function getStatusCode(Exception $exception): int
+    protected function parseStatusCode(Throwable $exception): int
     {
+        switch (true) {
+            case $exception instanceof ModelNotFoundException:
+            case $exception instanceof NotFoundHttpException:
+                return Response::HTTP_NOT_FOUND;
+
+            case $exception instanceof ValidationException:
+                return Response::HTTP_UNPROCESSABLE_ENTITY;
+
+            // Add custom status code for other exceptions.
+        }
+
         if (method_exists($exception, 'getStatusCode')) {
             return $exception->getStatusCode();
         }
@@ -79,26 +96,17 @@ class ErrorTransformer extends TransformerAbstract
             return $exception->status;
         }
 
-        switch (true) {
-            case $exception instanceof ModelNotFoundException:
-            case $exception instanceof NotFoundHttpException:
-                return Response::HTTP_NOT_FOUND;
-
-            case $exception instanceof ValidationException:
-                return Response::HTTP_UNPROCESSABLE_ENTITY;
-        }
-
         return Response::HTTP_INTERNAL_SERVER_ERROR;
     }
 
     /**
      * Get the details of the exception.
      *
-     * @param  \Exception  $exception
+     * @param  Throwable  $exception
      *
      * @return array
      */
-    protected function getDetails(Exception $exception): array
+    protected function parseDetails(Throwable $exception): array
     {
         if (method_exists($exception, 'getDetails')) {
             return $exception->getDetails();
@@ -111,15 +119,14 @@ class ErrorTransformer extends TransformerAbstract
         return [];
     }
 
-
     /**
      * Get the trace of the exception.
      *
-     * @param  \Exception  $exception
+     * @param  Throwable  $exception
      *
      * @return array
      */
-    protected function getTrace(Exception $exception): array
+    protected function parseTrace(Throwable $exception): array
     {
         return preg_split("/\n/", $exception->getTraceAsString());
     }

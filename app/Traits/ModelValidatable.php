@@ -16,13 +16,13 @@ trait ModelValidatable
     /**
      * Check if the model is valid for it's attributes.
      *
-     * @param string $event
+     * @param string $action
      *
      * @return bool
      */
-    public function isValid(string $event = null): bool
+    public function isValidFor(string $action = ''): bool
     {
-        $this->validator = app('validator')->make($this->attributes, $this->getValidationRules($event));
+        $this->validator = app('validator')->make($this->attributes, $this->mergeRules('*', $action));
 
         if ($this->validator()->passes()) {
             return true;
@@ -42,56 +42,39 @@ trait ModelValidatable
     }
 
     /**
-     * Get the validation rules.
+     * Get rules by action.
      *
-     * @param string $event
+     * @param string $action
      *
      * @return array
      */
-    private function getValidationRules(string $event = null): array
+    private function getRuleByAction(string $action): array
     {
-        $event = strtoupper($event);
-
         switch (true) {
+            case '' === $action:
             case !method_exists($this, 'rules'):
+            case !key_exists($action, $this->rules()):
                 return [];
 
-            case $event === 'UPDATE':
-            case $this->getKey() !== null:
-                return $this->mergeRuleWithDefault('UPDATE');
-
-            case $event === null:
-            case $event === 'CREATE':
             default:
-                return $this->mergeRuleWithDefault('CREATE');
+                return $this->rules()[$action];
         }
-
-        return [];
     }
 
     /**
-     * Merge validation rules wiht the default rules "*"
+     * Merge two rules together.
+     * The first rules will be overwritten by the second one.
      *
-     * @param string|null $event
+     * @param string $first
+     * @param string $second
      *
      * @return array
      */
-    private function mergeRuleWithDefault(string $event = null): array
+    private function mergeRules(string $first, string $second): array
     {
-        switch (true) {
-            case $event === null:
-                return isset($this->rules()['*'])
-                    ? $this->rules()['*']
-                    : $this->rules();
+        $firstRules = $this->getRuleByAction($first);
+        $secondRules = $this->getRuleByAction($second);
 
-            case !isset($this->rules()[$event]):
-                return $this->mergeRuleWithDefault();
-
-            case isset($this->rules()['*']):
-                return array_merge($this->rules()['*'], $this->rules()[$event]);
-
-            default:
-                return $this->rules()[$event];
-        }
+        return array_merge($firstRules, $secondRules);
     }
 }

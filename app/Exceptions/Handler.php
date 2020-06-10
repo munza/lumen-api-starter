@@ -2,16 +2,16 @@
 
 namespace App\Exceptions;
 
+use App\Serializers\ErrorSerializer;
 use App\Traits\ExceptionRenderable;
 use App\Transformers\ErrorTransformer;
-use App\Serializers\ErrorSerializer;
-use Exception;
+use Error;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\ValidationException;
 use Laravel\Lumen\Exceptions\Handler as ExceptionHandler;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
@@ -30,14 +30,30 @@ class Handler extends ExceptionHandler
     ];
 
     /**
+     * The transformer class for the error.
+     *
+     * @var string
+     */
+    protected $transformer = ErrorTransformer::class;
+
+    /**
+     * The serializer class for the error.
+     *
+     * @var string
+     */
+    protected $serializer = ErrorSerializer::class;
+
+    /**
      * Report or log an exception.
      *
      * This is a great spot to send exceptions to Sentry, Bugsnag, etc.
      *
-     * @param  \Exception  $exception
+     * @param  \Throwable  $exception
      * @return void
+     *
+     * @throws \Exception
      */
-    public function report(Exception $exception): void
+    public function report(Throwable $exception)
     {
         parent::report($exception);
     }
@@ -46,13 +62,15 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Exception  $exception
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param  \Throwable  $exception
+     * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
+     *
+     * @throws \Throwable
      */
-    public function render($request, Exception $exception): Response
+    public function render($request, Throwable $exception)
     {
-        if ($this->isJsonRenderable($request, $exception)) {
-            return $this->jsonResponse($exception, new ErrorTransformer(), new ErrorSerializer());
+        if ($this->isJsonRenderable($exception)) {
+            return $this->renderJson($request, $exception);
         }
 
         return parent::render($request, $exception);

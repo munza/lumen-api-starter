@@ -18,9 +18,9 @@ class Accounts
      *
      * @return array
      */
-    public function getUsersWithPagination(Request $request): array
+    public function getUsers(Request $request): array
     {
-        $users = User::filter($request)->paginate();
+        $users = User::filter($request)->paginate($request->get('per_page', 20));
 
         return fractal($users, new UserTransformer())->toArray();
     }
@@ -54,7 +54,7 @@ class Accounts
     {
         $user = new User($attrs);
 
-        if (!$user->isValid()) {
+        if (!$user->isValidFor('CREATE')) {
             throw new ValidationException($user->validator());
         }
 
@@ -79,10 +79,12 @@ class Accounts
     public function updateUserById(int $id, array $attrs): array
     {
         $user = User::findOrFail($id);
+
         $user->fill($attrs);
+
         $changes = $user->getDirty();
 
-        if (!$user->isValid()) {
+        if (!$user->isValidFor('UPDATE')) {
             throw new ValidationException($user->validator());
         }
 

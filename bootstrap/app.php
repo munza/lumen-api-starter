@@ -6,6 +6,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
     dirname(__DIR__)
 ))->bootstrap();
 
+date_default_timezone_set(env('APP_TIMEZONE', 'UTC'));
+
 /*
 |--------------------------------------------------------------------------
 | Create The Application
@@ -20,19 +22,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $app = new \Laravel\Lumen\Application(
     dirname(__DIR__)
 );
-
-$app->configure('app');
-$app->configure('auth');
-// $app->configure('broadcasting');
-// $app->configure('cache');
-$app->configure('cors');
-$app->configure('database');
-// $app->configure('filesystems');
-$app->configure('jwt');
-// $app->configure('logging');
-// $app->configure('queue');
-// $app->configure('services');
-// $app->configure('view');
 
 // $app->withFacades();
 $app->withEloquent();
@@ -50,13 +39,39 @@ $app->withEloquent();
 
 $app->singleton(
     \Illuminate\Contracts\Debug\ExceptionHandler::class,
-    App\Exceptions\Handler::class
+    \App\Exceptions\Handler::class
 );
 
 $app->singleton(
     \Illuminate\Contracts\Console\Kernel::class,
-    App\Console\Kernel::class
+    \App\Console\Kernel::class
 );
+
+/*
+|--------------------------------------------------------------------------
+| Register Config Files
+|--------------------------------------------------------------------------
+|
+| Now we will register the "app" configuration file. If the file exists in
+| your configuration directory it will be loaded; otherwise, we'll load
+| the default version. You may register other files below as needed.
+|
+*/
+
+$app->configure('app');
+$app->configure('auth');
+// $app->configure('broadcasting');
+// $app->configure('cache');
+$app->configure('cors');
+$app->configure('database');
+// $app->configure('filesystems');
+$app->configure('fractal');
+$app->configure('jwt');
+// $app->configure('logging');
+$app->configure('query-builder');
+// $app->configure('queue');
+// $app->configure('services');
+// $app->configure('view');
 
 /*
 |--------------------------------------------------------------------------
@@ -70,7 +85,7 @@ $app->singleton(
 */
 
 $app->middleware([
-    \Spatie\Cors\Cors::class,
+    \Fruitcake\Cors\HandleCors::class,
 ]);
 
 $app->routeMiddleware([
@@ -91,12 +106,12 @@ $app->routeMiddleware([
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(\App\Providers\AuthServiceProvider::class);
 $app->register(\App\Providers\EventServiceProvider::class);
+$app->register(\Fruitcake\Cors\CorsServiceProvider::class);
 $app->register(\Spatie\Fractal\FractalServiceProvider::class);
 $app->register(\Spatie\QueryBuilder\QueryBuilderServiceProvider::class);
 $app->register(\Tymon\JWTAuth\Providers\LumenServiceProvider::class);
-$app->register(\Spatie\Cors\CorsServiceProvider::class);
 
-if ($app->environment() == 'local') {
+if ('local' === $app->environment()) {
     $app->register(\Flipbox\LumenGenerator\LumenGeneratorServiceProvider::class);
 }
 
@@ -112,7 +127,7 @@ if ($app->environment() == 'local') {
 */
 
 $app->router->group([
-    'namespace' => 'App\Http\Controllers',
+    'namespace' => '\App\Http\Controllers',
 ], function ($router) {
     require __DIR__ . '/../routes/web.php';
 });
