@@ -54,7 +54,7 @@ class Accounts
     {
         $user = new User($attrs);
 
-        if (!$user->isValid()) {
+        if (!$user->isValidFor('CREATE')) {
             throw new ValidationException($user->validator());
         }
 
@@ -84,7 +84,7 @@ class Accounts
 
         $changes = $user->getDirty();
 
-        if (!$user->isValid()) {
+        if (!$user->isValidFor('UPDATE')) {
             throw new ValidationException($user->validator());
         }
 
