@@ -64,7 +64,7 @@ class UserController extends Controller
      * Update a user.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  int                       $id
      *
      * @return \Illuminate\Http\JsonResponse
      */

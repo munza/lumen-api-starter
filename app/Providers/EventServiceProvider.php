@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events;
+use App\Listeners;
 use Laravel\Lumen\Providers\EventServiceProvider as ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -12,12 +14,12 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        \App\Events\UserCreated::class => [
-            \App\Listeners\SendWelcomeEmail::class,
+        Events\UserCreated::class => [
+            Listeners\SendWelcomeEmail::class,
         ],
 
-        \App\Events\UserUpdated::class => [
-            \App\Listeners\SendPasswordChangeNotification::class,
+        Events\UserUpdated::class => [
+            Listeners\SendPasswordChangeNotification::class,
         ],
     ];
 }

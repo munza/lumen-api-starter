@@ -15,7 +15,6 @@ class ErrorTransformer extends TransformerAbstract
      * A Fractal transformer.
      *
      * @param  Throwable  $user
-     *
      * @return array
      */
     public function transform(Throwable $exception): array
@@ -32,7 +31,7 @@ class ErrorTransformer extends TransformerAbstract
         if (config('app.debug')) {
             if (config('app.debug')) {
                 $error['debug'] = [
-                    'exception' => class_basename($exception),
+                    'exception' => get_class($exception),
                     'trace' => $this->parseTrace($exception),
                 ];
             }
@@ -45,12 +44,11 @@ class ErrorTransformer extends TransformerAbstract
      * Get the message of the exception.
      *
      * @param  Throwable  $exception
-     *
      * @return string
      */
     protected function parseMessage(Throwable $exception): string
     {
-        if (!config('app.debug') and Response::HTTP_INTERNAL_SERVER_ERROR === $this->parseStatusCode($exception)) {
+        if (!config('app.debug') && Response::HTTP_INTERNAL_SERVER_ERROR === $this->parseStatusCode($exception)) {
             return "Something went wrong!";
         }
 
@@ -61,7 +59,7 @@ class ErrorTransformer extends TransformerAbstract
             // Add custom messages for other exceptions.
         }
 
-        if (method_exists($exception, 'getMessage') and ($message = $exception->getMessage()) != '') {
+        if (method_exists($exception, 'getMessage') && ($message = $exception->getMessage()) != '') {
             return $message;
         }
 
@@ -72,7 +70,6 @@ class ErrorTransformer extends TransformerAbstract
      * Get the status code of the exception.
      *
      * @param  Throwable  $exception
-     *
      * @return int
      */
     protected function parseStatusCode(Throwable $exception): int
@@ -103,7 +100,6 @@ class ErrorTransformer extends TransformerAbstract
      * Get the details of the exception.
      *
      * @param  Throwable  $exception
-     *
      * @return array
      */
     protected function parseDetails(Throwable $exception): array
@@ -123,7 +119,6 @@ class ErrorTransformer extends TransformerAbstract
      * Get the trace of the exception.
      *
      * @param  Throwable  $exception
-     *
      * @return array
      */
     protected function parseTrace(Throwable $exception): array

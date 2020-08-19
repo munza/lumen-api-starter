@@ -16,19 +16,14 @@ trait ModelValidatable
     /**
      * Check if the model is valid for it's attributes.
      *
-     * @param string $action
-     *
+     * @param  string  $action
      * @return bool
      */
     public function isValidFor(string $action = ''): bool
     {
-        $this->validator = app('validator')->make($this->attributes, $this->mergeRules('*', $action));
+        $this->validator = app('validator')->make($this->attributes, $this->getRulesFor($action));
 
-        if ($this->validator()->passes()) {
-            return true;
-        }
-
-        return false;
+        return (bool) $this->validator()->passes();
     }
 
     /**
@@ -42,39 +37,35 @@ trait ModelValidatable
     }
 
     /**
+     * Get rules for an action combined with common rules.
+     *
+     * @param  string  $action
+     * @return array
+     */
+    private function getRulesFor(string $action): array
+    {
+        if (!method_exists($this, 'rules')) {
+            return [];
+        }
+
+        $commonRules = $this->getRuleByAction('*');
+        $actionRules = $this->getRuleByAction($action);
+
+        return array_merge($commonRules, $actionRules);
+    }
+
+    /**
      * Get rules by action.
      *
-     * @param string $action
-     *
+     * @param  string  $action
      * @return array
      */
     private function getRuleByAction(string $action): array
     {
-        switch (true) {
-            case '' === $action:
-            case !method_exists($this, 'rules'):
-            case !key_exists($action, $this->rules()):
-                return [];
-
-            default:
-                return $this->rules()[$action];
+        if (!array_key_exists($action, $this->rules())) {
+            return [];
         }
-    }
 
-    /**
-     * Merge two rules together.
-     * The first rules will be overwritten by the second one.
-     *
-     * @param string $first
-     * @param string $second
-     *
-     * @return array
-     */
-    private function mergeRules(string $first, string $second): array
-    {
-        $firstRules = $this->getRuleByAction($first);
-        $secondRules = $this->getRuleByAction($second);
-
-        return array_merge($firstRules, $secondRules);
+        return $this->rules()[$action];
     }
 }

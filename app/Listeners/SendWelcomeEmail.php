@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\UserCreated;
+use Illuminate\Support\Carbon;
 
 class SendWelcomeEmail
 {
@@ -24,7 +25,8 @@ class SendWelcomeEmail
      */
     public function handle(UserCreated $event)
     {
-        $event->user->email_verified_at = \Carbon\Carbon::now()->toDateTimeString();
+        $event->user->email_verified_at = Carbon::now()->toDateTimeString();
+
         $event->user->save();
     }
 }

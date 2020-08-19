@@ -15,7 +15,6 @@ class Accounts
      * Get list of paginated users.
      *
      * @param  \Illuminate\Http\Request  $request
-     *
      * @return array
      */
     public function getUsers(Request $request): array
@@ -29,10 +28,9 @@ class Accounts
      * Get a user by ID.
      *
      * @param  int  $id
+     * @return array
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     *
-     * @return array
      */
     public function getUserById(int $id): array
     {
@@ -45,10 +43,9 @@ class Accounts
      * Store a new user.
      *
      * @param  array  $attrs
+     * @return array
      *
      * @throws \Illuminate\Validation\ValidationException
-     *
-     * @return array
      */
     public function storeUser(array $attrs): array
     {
@@ -70,24 +67,21 @@ class Accounts
      *
      * @param  int  $id
      * @param  array  $attrs
+     * @return array
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      * @throws \Illuminate\Validation\ValidationException
-     *
-     * @return array
      */
     public function updateUserById(int $id, array $attrs): array
     {
         $user = User::findOrFail($id);
-
         $user->fill($attrs);
-
-        $changes = $user->getDirty();
 
         if (!$user->isValidFor('UPDATE')) {
             throw new ValidationException($user->validator());
         }
 
+        $changes = $user->getDirty();
         $user->save();
 
         event(new UserUpdated($user, $changes));
@@ -99,19 +93,14 @@ class Accounts
      * Delete a user by ID.
      *
      * @param  int  $id
+     * @return bool
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     *
-     * @return bool
      */
     public function deleteUserById(int $id): bool
     {
         $user = User::findOrFail($id);
 
-        if (!$user->delete()) {
-            return false;
-        }
-
-        return true;
+        return (bool) $user->delete();
     }
 }

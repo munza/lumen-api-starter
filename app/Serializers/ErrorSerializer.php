@@ -9,9 +9,8 @@ class ErrorSerializer extends ArraySerializer
     /**
      * Serialize a collection.
      *
-     * @param string $resourceKey
-     * @param array  $data
-     *
+     * @param  string  $resourceKey
+     * @param  array   $data
      * @return array
      */
     public function collection($resourceKey, array $data)
@@ -22,9 +21,8 @@ class ErrorSerializer extends ArraySerializer
     /**
      * Serialize an item.
      *
-     * @param string $resourceKey
-     * @param array  $data
-     *
+     * @param  string  $resourceKey
+     * @param  array   $data
      * @return array
      */
     public function item($resourceKey, array $data)

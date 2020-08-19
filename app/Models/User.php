@@ -71,10 +71,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return [
             '*' => [
                 'name' => 'required',
+            ],
+            'CREATE' => [
                 'email' => 'required|unique:users,email',
                 'password' => 'required|min:6',
             ],
-            'CREATE' => [],
             'UPDATE' => [
                 'email' => 'required|unique:users,email,' . $this->id,
                 'password' => 'sometimes|min:6',
