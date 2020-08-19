@@ -24,7 +24,6 @@ class AuthController extends Controller
      * Get a JWT via given credentials.
      *
      * @param  Illuminate\Http\Request  $request
-     *
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request): JsonResponse

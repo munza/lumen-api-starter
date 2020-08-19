@@ -62,14 +62,14 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $exception
+     * @param  \Throwable                $exception
      * @return \Illuminate\Http\Response|\Illuminate\Http\JsonResponse
      *
      * @throws \Throwable
      */
     public function render($request, Throwable $exception)
     {
-        if ($this->isJsonRenderable($exception)) {
+        if ($this->checkIfJsonRenderable($exception)) {
             return $this->renderJson($request, $exception);
         }
 

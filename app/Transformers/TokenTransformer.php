@@ -10,7 +10,6 @@ class TokenTransformer extends TransformerAbstract
      * A Fractal transformer.
      *
      * @param  string  $token
-     *
      * @return array
      */
     public function transform(string $token): array

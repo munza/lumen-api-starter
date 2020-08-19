@@ -12,10 +12,10 @@ use Illuminate\Support\Carbon;
 | It is a breeze. Simply tell Lumen the URIs it should respond to
 | and give it the Closure to call when that URI is requested.
 |
- */
+*/
 
 $router->get('/', function () use ($router) {
-    return response()->json([
+    $data = [
         'name' => config('app.name'),
         'version' => config('app.version'),
         'framework' => $router->app->version(),
@@ -23,7 +23,9 @@ $router->get('/', function () use ($router) {
         'debug_mode' => config('app.debug'),
         'timestamp' => Carbon::now()->toDateTimeString(),
         'timezone' => config('app.timezone'),
-    ], Response::HTTP_OK);
+    ];
+
+    return response()->json($data, Response::HTTP_OK);
 });
 
 $router->post('/auth', 'AuthController@store');

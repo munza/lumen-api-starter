@@ -2,6 +2,7 @@
 
 namespace App\Exceptions;
 
+use Exception;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
 
 class UnauthorizedException extends UnauthorizedHttpException
@@ -12,7 +13,7 @@ class UnauthorizedException extends UnauthorizedHttpException
      * @param int        $code      The internal exception code
      * @param array      $headers
      */
-    public function __construct(string $message = null, \Exception $previous = null, ?int $code = 0, array $headers = array())
+    public function __construct(string $message = null, Exception $previous = null, ?int $code = 0, array $headers = [])
     {
         $challenge = 'Bearer realm=' . config('app.url');
 

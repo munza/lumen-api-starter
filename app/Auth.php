@@ -11,9 +11,8 @@ class Auth
     /**
      * Authenticate a user by emailand password
      *
-     * @param string $email
-     * @param string $password
-     *
+     * @param  string  $email
+     * @param  string  $password
      * @return array
      */
     public function authenticateByEmailAndPassword(string $email, string $password): array
@@ -56,10 +55,6 @@ class Auth
      */
     public function invalidateAuthenticationToken(): bool
     {
-        if (!app('auth')->logout()) {
-            return false;
-        }
-
-        return true;
+        return (bool) app('auth')->logout();
     }
 }
