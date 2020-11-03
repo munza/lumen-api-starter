@@ -11,10 +11,11 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Lumen\Auth\Authorizable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
 {
-    use Authenticatable, Authorizable, QueryFilterable, ModelValidatable, AttributeHashable;
+    use Authenticatable, Authorizable, QueryFilterable, ModelValidatable, AttributeHashable, HasFactory;
 
     /**
      * The attributes that are mass assignable.
