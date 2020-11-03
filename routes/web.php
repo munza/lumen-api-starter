@@ -1,5 +1,7 @@
 <?php
 
+/** @var \Laravel\Lumen\Routing\Router $router */
+
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
 
