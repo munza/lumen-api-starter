@@ -29,12 +29,10 @@ class ErrorTransformer extends TransformerAbstract
         }
 
         if (config('app.debug')) {
-            if (config('app.debug')) {
-                $error['debug'] = [
-                    'exception' => get_class($exception),
-                    'trace' => $this->parseTrace($exception),
-                ];
-            }
+            $error['debug'] = [
+                'exception' => get_class($exception),
+                'trace' => $this->parseTrace($exception),
+            ];
         }
 
         return $error;
