@@ -9,7 +9,7 @@
     "license": "MIT",
     "type": "project",
     "require": {
-        "php": "^7.2.5",
+        "php": "^7.4|^8.0",
         "fruitcake/laravel-cors": "^2.0",
         "laravel/lumen-framework": "^8.0",
         "spatie/laravel-fractal": "^5.7",
