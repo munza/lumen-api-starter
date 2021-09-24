@@ -1,4 +1,4 @@
-FROM composer:1.9 as vendor
+FROM composer:2 as vendor
 
 COPY ./database ./database
 COPY ./tests ./tests

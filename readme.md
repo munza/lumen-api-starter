@@ -4,11 +4,11 @@ A starter template to develop API with Lumen 8.
 
 ### Included Packages
 
--   [flipbox/lumen-generator@^7.0](https://github.com/flipboxstudio/lumen-generator)
+-   [flipbox/lumen-generator@^8.0](https://github.com/flipboxstudio/lumen-generator)
 -   [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
--   [spatie/laravel-fractal@^5.7](https://github.com/spatie/laravel-fractal)
--   [spatie/laravel-query-builder@^2.8](https://github.com/spatie/laravel-query-builder)
--   [tymon/jwt-auth@^1.0](https://github.com/tymondesigns/jwt-auth)
+-   [spatie/laravel-fractal@^5.8](https://github.com/spatie/laravel-fractal)
+-   [spatie/laravel-query-builder@^3.6](https://github.com/spatie/laravel-query-builder)
+-   [tymon/jwt-auth@^1.0-x-dev](https://github.com/tymondesigns/jwt-auth)
 
 ### Installation
 
