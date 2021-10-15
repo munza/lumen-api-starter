@@ -18,7 +18,10 @@ down: ## Down all Docker services
 logs: ## Follow logs from Docker service app
 	@docker-compose logs -f app
 
-ssh: ## SSH into Docker service app (includes composer)
+ssh: ## SSH into Docker service app
+	@docker-compose run --rm app sh
+
+composer: ## SSH into a Composer container
 	@docker run --rm -it -v $(PWD):/app composer:2 sh
 
 test: ## Run PHPUnit tests
