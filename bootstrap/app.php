@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 (new \Laravel\Lumen\Bootstrap\LoadEnvironmentVariables(
     dirname(__DIR__)
@@ -24,6 +24,7 @@ $app = new \Laravel\Lumen\Application(
 );
 
 // $app->withFacades();
+
 $app->withEloquent();
 
 /*
@@ -59,19 +60,6 @@ $app->singleton(
 */
 
 $app->configure('app');
-$app->configure('auth');
-// $app->configure('broadcasting');
-// $app->configure('cache');
-$app->configure('cors');
-$app->configure('database');
-// $app->configure('filesystems');
-$app->configure('fractal');
-$app->configure('jwt');
-// $app->configure('logging');
-$app->configure('query-builder');
-// $app->configure('queue');
-// $app->configure('services');
-// $app->configure('view');
 
 /*
 |--------------------------------------------------------------------------
@@ -129,7 +117,7 @@ if ('local' === $app->environment()) {
 $app->router->group([
     'namespace' => '\App\Http\Controllers',
 ], function ($router) {
-    require __DIR__ . '/../routes/web.php';
+    require __DIR__.'/../routes/web.php';
 });
 
 return $app;
