@@ -8,7 +8,7 @@ A starter template to develop API with Lumen 8.
 -   [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
 -   [spatie/laravel-fractal@^5.8](https://github.com/spatie/laravel-fractal)
 -   [spatie/laravel-query-builder@^3.6](https://github.com/spatie/laravel-query-builder)
--   [tymon/jwt-auth@^1.0-x-dev](https://github.com/tymondesigns/jwt-auth)
+-   [tymon/jwt-auth@^1.0](https://github.com/tymondesigns/jwt-auth)
 
 ### Installation
 
@@ -16,25 +16,32 @@ A starter template to develop API with Lumen 8.
     -   `git clone git@github.com:munza/lumen-api-starter.git`
     -   `git clone https://github.com/munza/lumen-api-starter.git`
 -   `cd lumen-api-starter`
--   `composer create-project`
--   `php artisan key:generate`
--   `php artisan jwt:secret`
--   `php artisan migrate`
--   `php artisan serve`
+-   SSH into the Docker container with `make ssh` and run the following.
+    -   `composer create-project`
+    -   `php artisan key:generate`
+    -   `php artisan jwt:secret`
+    -   `php artisan migrate`
+-   Exit from Docker container with `CTRL+C` or `exit`.
+-   Rename `docker-compose.local.yaml` to `docker-compose.overridee.yaml`
+-   Start the local development server with `make up`.
+-   Run `make` to see available commands.
 
 #### Create new user
 
+-   `make ssh`
 -   `php artisan ti`
 -   `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'password'])`
 
 ### Configuration
 
--   Edit `.env` file for database connection configuration.
--   Edit the files located under `config` directory for configuration.
+-   Edit `.env` file for environment variables.
+-   Edit the files in `config` directory for application configuration.
 
 ### Usage
 
-#### Adding a new resource endpoint
+Always `ssh` into Docker container `app` by running `make ssh` before executing any `artisan` commands.
+
+#### Add a new resource endpoint
 
 -   Add endpoint in `routes/web.php`.
 
@@ -86,7 +93,7 @@ A starter template to develop API with Lumen 8.
     }
     ```
 
-    You can also use Facade for the services. But I do not prefer to use Facade in Lumen personally.
+    You can also use Facade for the services.
 
 -   Add transformers at `app/Transformers` directory or use the command `php artisan make:transformer {name}`.
 
@@ -182,15 +189,9 @@ A starter template to develop API with Lumen 8.
     }
     ```
 
-#### Using CORS
+### Using CORS
 
 Please check [fruitcake/laravel-cors](https://github.com/fruitcake/laravel-cors) in Github for the usage details.
-
-#### Using Docker
-
-Docker can be run with `docker-compose up -d` command. After that, any command stated above can be executed with Docker. The format is — `docker-compose app exec <command>` or `docker exec lumen-app <command>`. For example database can be migrated with `docker-compose app exec php artisan migrate`.
-
-_I would suggest not to use Docker Compose while deploying in production._
 
 ### Todo
 
