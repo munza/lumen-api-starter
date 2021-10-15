@@ -4,38 +4,38 @@ A starter template to develop API with Lumen 8.
 
 ### Included Packages
 
--   [flipbox/lumen-generator@^8.0](https://github.com/flipboxstudio/lumen-generator)
--   [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
--   [spatie/laravel-fractal@^5.8](https://github.com/spatie/laravel-fractal)
--   [spatie/laravel-query-builder@^3.6](https://github.com/spatie/laravel-query-builder)
--   [tymon/jwt-auth@^1.0](https://github.com/tymondesigns/jwt-auth)
+- [flipbox/lumen-generator@^8.0](https://github.com/flipboxstudio/lumen-generator)
+- [fruitcake/laravel-cors@^2.0](https://github.com/fruitcake/laravel-cors)
+- [spatie/laravel-fractal@^5.8](https://github.com/spatie/laravel-fractal)
+- [spatie/laravel-query-builder@^3.6](https://github.com/spatie/laravel-query-builder)
+- [tymon/jwt-auth@^1.0](https://github.com/tymondesigns/jwt-auth)
 
 ### Installation
 
--   Clone the Repo:
-    -   `git clone git@github.com:munza/lumen-api-starter.git`
-    -   `git clone https://github.com/munza/lumen-api-starter.git`
--   `cd lumen-api-starter`
--   SSH into the Docker container with `make ssh` and run the following.
-    -   `composer create-project`
-    -   `php artisan key:generate`
-    -   `php artisan jwt:secret`
-    -   `php artisan migrate`
--   Exit from Docker container with `CTRL+C` or `exit`.
--   Rename `docker-compose.local.yaml` to `docker-compose.overridee.yaml`
--   Start the local development server with `make up`.
--   Run `make` to see available commands.
+- Clone the Repo:
+    - `git clone git@github.com:munza/lumen-api-starter.git`
+    - `git clone https://github.com/munza/lumen-api-starter.git`
+- `cd lumen-api-starter`
+- SSH into the Docker container with `make ssh` and run the following.
+    - `composer create-project`
+    - `php artisan key:generate`
+    - `php artisan jwt:secret`
+    - `php artisan migrate`
+- Exit from Docker container with `CTRL+C` or `exit`.
+- Rename `docker-compose.local.yaml` to `docker-compose.overridee.yaml`
+- Start the local development server with `make up`.
+- Run `make` to see available commands.
 
 #### Create new user
 
--   `make ssh`
--   `php artisan ti`
--   `factory('App\Models\User')->create(['email' => 'admin@localtest.me', 'password' => 'password'])`
+- `make ssh`
+- `php artisan ti`
+- `App\Models\User::factory()->create(['email' => 'admin@localtest.me', 'password' => 'password'])`
 
 ### Configuration
 
--   Edit `.env` file for environment variables.
--   Edit the files in `config` directory for application configuration.
+- Edit `.env` file for environment variables.
+- Edit the files in `config` directory for application configuration.
 
 ### Usage
 
@@ -43,7 +43,7 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
 
 #### Add a new resource endpoint
 
--   Add endpoint in `routes/web.php`.
+- Add endpoint in `routes/web.php`.
 
     ```php
     $router->group(['middleware' => 'auth:api'], function ($router) {
@@ -51,11 +51,11 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
     });
     ```
 
--   Add controller with `php artisan make:controller {name}` command
+- Add controller with `php artisan make:controller {name}` command
 
--   Add model at `php artisan make:model {name}`. You can use `-m` flag to add migration file and `-f` flag for factory file.
+- Add model at `php artisan make:model {name}`. You can use `-m` flag to add migration file and `-f` flag for factory file.
 
--   Add service at `app` directory.
+- Add service at `app` directory.
 
     ```php
     <?php
@@ -68,7 +68,7 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
     }
     ```
 
--   Load the service in controller.
+- Load the service in controller.
 
     ```php
     <?php
@@ -95,7 +95,7 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
 
     You can also use Facade for the services.
 
--   Add transformers at `app/Transformers` directory or use the command `php artisan make:transformer {name}`.
+- Add transformers at `app/Transformers` directory or use the command `php artisan make:transformer {name}`.
 
     ```php
     <?php
@@ -123,7 +123,7 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
     }
     ```
 
--   Render JSON in controllers
+- Render JSON in controllers
 
     ```php
     <?php
@@ -161,7 +161,7 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
     }
     ```
 
--   Exception message, status code and details can be displayed by declaring these as methods in an exception class.
+- Exception message, status code and details can be displayed by declaring these as methods in an exception class.
 
     ```php
     <?php
@@ -189,13 +189,46 @@ Always `ssh` into Docker container `app` by running `make ssh` before executing 
     }
     ```
 
+#### Authentication
+
+- Create Bearer Token
+
+```
+curl --request POST 'http://127.0.0.1:8000/auth' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "email": "admin@localtest.me",
+        "password": "password"
+    }'
+```
+
+Example Bearer Token -
+
+```
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXV0aCIsImlhdCI6MTYzNDI2MTQzNSwiZXhwIjoxNjM0MjY1MDM1LCJuYmYiOjE2MzQyNjE0MzUsImp0aSI6IlVzVm1PZk52dTBrOTZFYk4iLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.xjvzoFCkxlB_k2z0R0zkeatDDRU0hAbRFMETAEZBsss
+```
+
+Bearer Token need to passed in the request header as 
+
+```
+Authorization: Bearer <token>
+```
+
+- Get Current User
+
+```
+curl --request GET 'http://127.0.0.1:8000/auth' \
+    --header 'Content-Type: application/json' \
+    --header 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXV0aCIsImlhdCI6MTYzNDI2MTQzNSwiZXhwIjoxNjM0MjY1MDM1LCJuYmYiOjE2MzQyNjE0MzUsImp0aSI6IlVzVm1PZk52dTBrOTZFYk4iLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.xjvzoFCkxlB_k2z0R0zkeatDDRU0hAbRFMETAEZBsss'
+```
+
 ### Using CORS
 
 Please check [fruitcake/laravel-cors](https://github.com/fruitcake/laravel-cors) in Github for the usage details.
 
 ### Todo
 
--   [ ] Move all the extended features inside a package.
+- [ ] Move all the extended features inside a package.
 
 ### Issues
 
