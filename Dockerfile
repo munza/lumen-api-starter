@@ -26,11 +26,11 @@ RUN apk add --no-cache \
     oniguruma-dev \
     mysql-client \
     libxml2-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
+    # If you have enabled gd plugin
+    # libpng-dev \
+    # libjpeg-turbo-dev \
+    # freetype-dev \
     git \
-    vim \
     zip \
     unzip \
     curl
@@ -43,8 +43,9 @@ RUN docker-php-ext-install \
     tokenizer \
     xml
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg
-RUN docker-php-ext-install gd
+# If you need to work with image manipulation.
+# RUN docker-php-ext-configure gd --with-freetype --with-jpeg
+# RUN docker-php-ext-install gd
 
 RUN adduser www-data www-data
 
