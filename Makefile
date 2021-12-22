@@ -12,7 +12,7 @@ help:
 build: ## Build all Docker images
 	@docker build . --file Dockerfile --tag ${IMAGE_NAME}:latest
 
-up: ## Up all Docker services
+up: ## Start all Docker services
 	@docker-compose up -d
 
 stop: ## Stop all Docker services
@@ -30,5 +30,11 @@ ssh: ## SSH into Docker service app
 composer: ## SSH into a Composer container
 	@docker run --rm -it -v $(PWD):/app composer:2 sh
 
-test: ## Run PHPUnit tests
+dev-test: ## Run test withing Docker-Compose
+	@docker-compose run --rm app vendor/bin/phpunit
+
+install: ## Install Composeer dependencies
+	@docker run --rm -v $(PWD):/app composer:2 composer install
+
+test: build ## Run PHPUnit tests
 	@docker run --rm ${IMAGE_NAME}:latest vendor/bin/phpunit

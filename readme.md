@@ -24,6 +24,7 @@ A starter template to develop API with Lumen 8.
 - Exit from Docker container with `CTRL+C` or `exit`.
 - Rename `docker-compose.local.yaml` to `docker-compose.overridee.yaml`
 - Start the local development server with `make up`.
+- Run tests with `make dev-test`.
 - Run `make` to see available commands.
 
 #### Create new user
