@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: lumen-app
+    container_name: lumen-api-starter-app
     volumes:
       - app-data:/var/www/html
       - ./docker/php/php.ini:/usr/local/etc/php/php.ini
@@ -14,7 +14,7 @@ services:
 
   server:
     image: nginx:1-alpine
-    container_name: lumen-server
+    container_name: lumen-api-starter-server
     ports:
       - 8000:80
     volumes:
@@ -25,7 +25,7 @@ services:
 
   db:
     image: mysql:8
-    container_name: lumen-db
+    container_name: lumen-api-starter-db
     command: --default-authentication-plugin=mysql_native_password
     ports:
       - 33061:3306
