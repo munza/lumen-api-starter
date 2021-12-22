@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: lumen-api-starter-app
     container_name: lumen-api-starter-app
     volumes:
       - app-data:/var/www/html
