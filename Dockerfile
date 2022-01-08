@@ -18,6 +18,7 @@ FROM php:7.4-fpm-alpine
 
 WORKDIR /var/www/html
 
+COPY --from=vendor /usr/bin/composer /usr/bin/composer
 COPY . .
 COPY --from=vendor /app/vendor ./vendor/
 COPY ./docker/php/php.ini /usr/local/etc/php/php.ini
