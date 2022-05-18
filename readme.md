@@ -28,7 +28,7 @@ https://lumen.laravel.com/docs/9.x
     - `php artisan jwt:secret`
     - `php artisan migrate`
 - Exit from Docker container with `CTRL+C` or `exit`.
-- Rename `docker-compose.local.yaml` to `docker-compose.overridee.yaml`
+- Rename `docker-compose.local.yml` to `docker-compose.override.yml`
 - Start the local development server with `make up`.
 - Run tests with `make dev-test`.
 - Run `make` to see available commands.

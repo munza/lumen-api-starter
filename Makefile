@@ -13,13 +13,16 @@ build: ## Build all Docker images
 	@docker build . --file Dockerfile --tag ${IMAGE_NAME}:latest
 
 up: ## Start all Docker services
-	@docker-compose up -d
+	@docker-compose up --remove-orphans  -d
 
 stop: ## Stop all Docker services
 	@docker-compose stop
 
 down: ## Down all Docker services
-	@docker-compose down
+	@docker-compose down -v
+
+clean: ## Clean all Docker services
+	@docker rmi -f lumen-api-starter-app
 
 logs: ## Follow logs from Docker service app
 	@docker-compose logs -f app
